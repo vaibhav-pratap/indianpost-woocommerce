@@ -5,11 +5,56 @@ if (!defined('ABSPATH')) {
 
 class IndianPost_Settings {
     public function __construct() {
+        // Add settings to WooCommerce > Settings > Shipping
+        add_filter('woocommerce_get_sections_shipping', [$this, 'add_shipping_section']);
+        add_filter('woocommerce_get_settings_shipping', [$this, 'add_shipping_settings'], 10, 2);
+
+        // Add separate admin page
         add_action('admin_menu', [$this, 'add_settings_page']);
-        add_action('admin_init', [$this, 'register_settings']);
     }
 
-    // Adds the settings page to the WordPress Admin Menu
+    // Adds a new section under WooCommerce > Settings > Shipping
+    public function add_shipping_section($sections) {
+        $sections['indianpost'] = __('India Post API', 'indianpost-woocommerce');
+        return $sections;
+    }
+
+    // Adds settings fields under the new India Post API section
+    public function add_shipping_settings($settings, $current_section) {
+        if ($current_section === 'indianpost') {
+            $settings = [
+                [
+                    'title' => __('India Post WooCommerce Settings', 'indianpost-woocommerce'),
+                    'type'  => 'title',
+                    'desc'  => __('Configure India Post API settings.', 'indianpost-woocommerce'),
+                    'id'    => 'indianpost_settings_title',
+                ],
+                [
+                    'title'    => __('Customer ID', 'indianpost-woocommerce'),
+                    'type'     => 'text',
+                    'desc'     => __('Enter your India Post Customer ID.', 'indianpost-woocommerce'),
+                    'id'       => 'indianpost_customer_id',
+                    'default'  => '',
+                    'desc_tip' => true,
+                ],
+                [
+                    'title'    => __('API Key', 'indianpost-woocommerce'),
+                    'type'     => 'password',
+                    'desc'     => __('Enter your India Post API Key.', 'indianpost-woocommerce'),
+                    'id'       => 'indianpost_api_key',
+                    'default'  => '',
+                    'desc_tip' => true,
+                ],
+                [
+                    'type' => 'sectionend',
+                    'id'   => 'indianpost_settings_end',
+                ],
+            ];
+        }
+        return $settings;
+    }
+
+    // Adds a separate admin settings page
     public function add_settings_page() {
         add_menu_page(
             __('India Post Settings', 'indianpost-woocommerce'), 
@@ -22,19 +67,13 @@ class IndianPost_Settings {
         );
     }
 
-    // Registers settings in the WordPress database
-    public function register_settings() {
-        register_setting('indianpost_settings_group', 'indianpost_customer_id');
-        register_setting('indianpost_settings_group', 'indianpost_api_key');
-    }
-
     // Load the settings page template
     public function load_settings_page() {
         require_once INDIANPOST_PLUGIN_DIR . 'admin/settings-page.php';
     }
 }
 
-// Ensure the class is available before initializing
+// Initialize class
 if (class_exists('IndianPost_Settings')) {
     new IndianPost_Settings();
 } else {
