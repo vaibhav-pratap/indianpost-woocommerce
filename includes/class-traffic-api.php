@@ -7,10 +7,7 @@ class IndianPost_Tariff_API {
             'service' => $service,
             'sourcepin' => $source_pincode,
             'destinationpin' => $destination_pincode,
-            'weight' => $weight,
-            'length' => 10,
-            'breadth' => 10,
-            'height' => 10
+            'weight' => $weight
         ]);
 
         $response = wp_remote_post($this->api_url, [
