@@ -54,19 +54,6 @@ class IndianPost_Settings {
         return $settings;
     }
 
-    // Adds a separate admin settings page
-    public function add_settings_page() {
-        add_menu_page(
-            __('India Post Settings', 'indianpost-woocommerce'), 
-            __('India Post', 'indianpost-woocommerce'), 
-            'manage_options', 
-            'indianpost-settings', 
-            [$this, 'load_settings_page'],
-            'dashicons-admin-generic', 
-            75
-        );
-    }
-
     // Load the settings page template
     public function load_settings_page() {
         require_once INDIANPOST_PLUGIN_DIR . 'admin/settings-page.php';
