@@ -9,47 +9,32 @@ class IndianPost_Settings {
         add_action('admin_init', [$this, 'register_settings']);
     }
 
+    // Adds the settings page to the WordPress Admin Menu
     public function add_settings_page() {
         add_menu_page(
             __('India Post Settings', 'indianpost-woocommerce'), 
             __('India Post', 'indianpost-woocommerce'), 
             'manage_options', 
             'indianpost-settings', 
-            [$this, 'settings_page_html'],
+            [$this, 'load_settings_page'],
             'dashicons-admin-generic', 
             75
         );
     }
 
+    // Registers settings in the WordPress database
     public function register_settings() {
         register_setting('indianpost_settings_group', 'indianpost_customer_id');
         register_setting('indianpost_settings_group', 'indianpost_api_key');
     }
 
-    public function settings_page_html() {
-        ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('India Post WooCommerce Settings', 'indianpost-woocommerce'); ?></h1>
-            <form method="post" action="options.php">
-                <?php settings_fields('indianpost_settings_group'); ?>
-                <table class="form-table">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Customer ID', 'indianpost-woocommerce'); ?></th>
-                        <td><input type="text" name="indianpost_customer_id" value="<?php echo esc_attr(get_option('indianpost_customer_id')); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('API Key', 'indianpost-woocommerce'); ?></th>
-                        <td><input type="password" name="indianpost_api_key" value="<?php echo esc_attr(get_option('indianpost_api_key')); ?>" /></td>
-                    </tr>
-                </table>
-                <?php submit_button(__('Save Settings', 'indianpost-woocommerce')); ?>
-            </form>
-        </div>
-        <?php
+    // Load the settings page template
+    public function load_settings_page() {
+        require_once INDIANPOST_PLUGIN_DIR . 'admin/settings-page.php';
     }
 }
 
-// Ensure the class is available before instantiating
+// Ensure the class is available before initializing
 if (class_exists('IndianPost_Settings')) {
     new IndianPost_Settings();
 } else {
