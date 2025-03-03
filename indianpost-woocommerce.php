@@ -3,7 +3,7 @@
  * Plugin Name:       IndianPost WooCommerce Integration
  * Plugin URI:        https://exiverlabs.co.in
  * Description:       Integrates India Post with WooCommerce for shipping, tracking, and tariff calculation.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires PHP:      8.0
  * Requires at least: 6.0
  * Tested up to:      6.5
@@ -16,6 +16,19 @@
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
+
+// Check if WooCommerce is installed and activated
+function indianpost_check_woocommerce() {
+    if (!class_exists('WooCommerce')) {
+        deactivate_plugins(plugin_basename(__FILE__));
+        wp_die(
+            __('This plugin requires WooCommerce to be installed and activated.', 'indianpost-woocommerce'),
+            __('Plugin Activation Error', 'indianpost-woocommerce'),
+            ['back_link' => true]
+        );
+    }
+}
+register_activation_hook(__FILE__, 'indianpost_check_woocommerce');
 
 // Define plugin constants
 define('INDIANPOST_PLUGIN_DIR', plugin_dir_path(__FILE__));
