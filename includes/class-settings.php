@@ -9,7 +9,6 @@ class IndianPost_Settings {
         add_action('admin_init', [$this, 'register_settings']);
     }
 
-    // Adds the settings page to the WordPress admin menu
     public function add_settings_page() {
         add_menu_page(
             __('India Post Settings', 'indianpost-woocommerce'), 
@@ -22,13 +21,11 @@ class IndianPost_Settings {
         );
     }
 
-    // Registers settings in the WordPress database
     public function register_settings() {
         register_setting('indianpost_settings_group', 'indianpost_customer_id');
         register_setting('indianpost_settings_group', 'indianpost_api_key');
     }
 
-    // Settings page HTML content
     public function settings_page_html() {
         ?>
         <div class="wrap">
@@ -52,5 +49,9 @@ class IndianPost_Settings {
     }
 }
 
-// Initialize settings class
-new IndianPost_Settings();
+// Ensure the class is available before instantiating
+if (class_exists('IndianPost_Settings')) {
+    new IndianPost_Settings();
+} else {
+    error_log("IndianPost_Settings class is missing.");
+}
