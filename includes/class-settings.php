@@ -53,11 +53,6 @@ class IndianPost_Settings {
         }
         return $settings;
     }
-
-    // Load the settings page template
-    public function load_settings_page() {
-        require_once INDIANPOST_PLUGIN_DIR . 'admin/settings-page.php';
-    }
 }
 
 // Initialize class
