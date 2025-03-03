@@ -8,9 +8,6 @@ class IndianPost_Settings {
         // Add settings to WooCommerce > Settings > Shipping
         add_filter('woocommerce_get_sections_shipping', [$this, 'add_shipping_section']);
         add_filter('woocommerce_get_settings_shipping', [$this, 'add_shipping_settings'], 10, 2);
-
-        // Add separate admin page
-        add_action('admin_menu', [$this, 'add_settings_page']);
     }
 
     // Adds a new section under WooCommerce > Settings > Shipping
